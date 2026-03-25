@@ -71,14 +71,18 @@ export const cartService = {
     return prisma.cart.findUnique({ where: { id: cart.id }, include: cartInclude });
   },
 
-  async updateItem(itemId: string, quantity: number, userId?: string) {
+  async updateItem(itemId: string, quantity: number, userId?: string, guestToken?: string) {
     const item = await prisma.cartItem.findUnique({
       where: { id: itemId },
       include: { cart: true },
     });
     if (!item) throw new AppError(404, 'Cart item not found');
 
-    if (userId && item.cart.userId && item.cart.userId !== userId) {
+    if (item.cart.userId) {
+      if (!userId || item.cart.userId !== userId) {
+        throw new AppError(403, 'Forbidden');
+      }
+    } else if (!guestToken || item.cart.guestToken !== guestToken) {
       throw new AppError(403, 'Forbidden');
     }
 
@@ -87,14 +91,18 @@ export const cartService = {
     return prisma.cart.findUnique({ where: { id: item.cartId }, include: cartInclude });
   },
 
-  async removeItem(itemId: string, userId?: string) {
+  async removeItem(itemId: string, userId?: string, guestToken?: string) {
     const item = await prisma.cartItem.findUnique({
       where: { id: itemId },
       include: { cart: true },
     });
     if (!item) throw new AppError(404, 'Cart item not found');
 
-    if (userId && item.cart.userId && item.cart.userId !== userId) {
+    if (item.cart.userId) {
+      if (!userId || item.cart.userId !== userId) {
+        throw new AppError(403, 'Forbidden');
+      }
+    } else if (!guestToken || item.cart.guestToken !== guestToken) {
       throw new AppError(403, 'Forbidden');
     }
 

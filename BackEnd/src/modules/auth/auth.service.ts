@@ -14,6 +14,22 @@ const buildTokens = (payload: JwtPayload) => ({
   refreshToken: signRefreshToken(payload),
 });
 
+const toPublicUser = (user: {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  authProvider: AuthProvider;
+  createdAt: Date;
+}) => ({
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  role: user.role,
+  authProvider: user.authProvider,
+  createdAt: user.createdAt,
+});
+
 export const authService = {
   async register(name: string, email: string, password: string) {
     const existing = await prisma.user.findUnique({ where: { email } });
@@ -41,7 +57,7 @@ export const authService = {
       },
     });
 
-    return { user, ...tokens };
+    return { user: toPublicUser(user), ...tokens };
   },
 
   async login(email: string, password: string) {
@@ -62,14 +78,18 @@ export const authService = {
       },
     });
 
-    return { user, ...tokens };
+    return { user: toPublicUser(user), ...tokens };
   },
 
   async refresh(refreshToken: string) {
     const saved = await prisma.refreshToken.findUnique({ where: { token: refreshToken } });
     if (!saved) throw new AppError(401, 'Invalid refresh token');
 
-    verifyRefreshToken(refreshToken);
+    try {
+      verifyRefreshToken(refreshToken);
+    } catch {
+      throw new AppError(401, 'Invalid refresh token');
+    }
 
     const user = await prisma.user.findUnique({ where: { id: saved.userId } });
     if (!user) throw new AppError(401, 'Invalid refresh token');
