@@ -25,12 +25,17 @@ export const cartController = {
       req.params.itemId,
       req.body.quantity,
       req.authUser?.id,
+      req.body.guestToken,
     );
     res.json(cart);
   },
 
   async removeItem(req: Request, res: Response) {
-    const cart = await cartService.removeItem(req.params.itemId, req.authUser?.id);
+    const cart = await cartService.removeItem(
+      req.params.itemId,
+      req.authUser?.id,
+      req.query.guestToken as string | undefined,
+    );
     res.json(cart);
   },
 
