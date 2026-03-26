@@ -1,0 +1,55 @@
+.special-banner {
+    display: flex;
+    padding: 2rem 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; 
+    margin-bottom: 2.088vw;
+
+}
+
+.special-banner__block {
+    width: 50%;
+    position: relative;
+    overflow: hidden; /* Asegura que la imagen no se desborde del contenedor */
+}
+
+.special-banner__link-container {
+    display: flex;
+    gap: 2rem;
+    position: absolute;
+    z-index: 1;
+    padding: 1rem 0;
+    bottom: 0%;
+    cursor: pointer;
+    white-space: nowrap; /* Asegura que todo el texto se mantenga en una línea */
+}
+
+.special-banner__link-container span {
+    display: inline-block; /* Asegura que cada `span` se trate como un bloque en línea */
+    position: relative;
+    color: #fff;
+    font-size: 2rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    animation: scrollText 150s linear infinite;
+}
+@keyframes scrollText {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-1200%);
+    }
+}
+
+.special-banner__image-container img {
+    width: 100%;
+    height: 80rem;
+    display: block;
+    transition: transform 0.3s ease; /* Transición suave */
+}
+
+.special-banner__block:hover .special-banner__image-container img {
+    transform: scale(1.1); /* Aumenta el tamaño de la imagen al pasar el cursor */
+}
