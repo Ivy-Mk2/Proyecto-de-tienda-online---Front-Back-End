@@ -1,0 +1,111 @@
+/* Banner */
+.banner{
+    margin-bottom: 2.08vw;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner__content {
+    display: flex;
+    padding: 2rem 5rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 82.5rem;
+}
+.banner__arrows{
+    display: flex;
+    width: 100%;
+    position: absolute;
+    bottom: 50%;
+    left: 0;
+    justify-content: space-between;
+    padding: 0rem 3rem;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.banner__arrows i {
+    font-size: 6.5rem;
+    color: #ebeae9cb;
+    cursor: pointer;
+}
+
+.banner__title {
+    color: #fff;
+    font-size: 9rem;
+    font-weight: 700;
+    line-height: 0.8;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    max-width: 60rem;
+}
+
+.banner__description,.banner__link {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    max-width: 60rem;
+}
+.banner__selector{
+    display: flex;
+    width: 100%;
+    position: absolute;
+    bottom: 5%;
+    padding: 0rem 3rem;
+    justify-content: center;
+    gap: 1rem;
+}
+.banner__selector i{
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+}
+.banner:hover .banner__arrows {
+    opacity: 0.9; /* Hace que las flechas sean visibles */
+}
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(50deg, #000000, #00000020);
+    z-index: 10; /* Coloca esta capa encima de la imagen */
+}
+.banner_images{
+    position: absolute;
+    bottom: 0 ;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    
+}
+.banner_images img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(100%);
+    opacity: 0; /* Oculta imágenes que no están activas */
+    z-index: 0;
+}
+.banner_images img.active {
+    transform: translateX(0);
+    opacity: 1; /* Imagen activa visible */
+    z-index: 2;
+}
+
+.banner_images img.previous {
+    transform: translateX(-100%); /* Imagen desplazada hacia la izquierda */
+    opacity: 1; /* Imagen activa visible */
+    z-index: 2;
+}

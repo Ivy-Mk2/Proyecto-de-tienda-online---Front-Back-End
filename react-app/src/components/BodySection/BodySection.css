@@ -1,0 +1,50 @@
+.category-container {
+    display: flex;
+    gap: 5rem; /* Espaciado entre los elementos */
+    padding: 5rem 10rem;
+}
+
+.category {
+    position: relative; /* Necesario para posicionar el texto dentro del contenedor */
+    display: flex;
+    width: 100%;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.img-container {
+    position: relative; /* Necesario para que el texto se coloque en relación a la imagen */
+    aspect-ratio: 4 / 4; /* Relación de aspecto de la imagen */
+    object-fit: cover; /* Asegura que la imagen se adapte bien */
+    overflow: hidden; /* Evita que se salga contenido no deseado */
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.img-container img {
+    width: 100%;
+}
+.category span {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    z-index: 10; /* Asegura que esté por encima de la imagen */
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff; /* Cambia según contraste necesario */
+    border-radius: 5px; /* Opcional para esquinas redondeadas */
+    box-sizing: border-box; /* Asegura que el padding no rompa el diseño */
+    letter-spacing: 0.1em; /* Espaciado entre letras */
+    opacity: 0; /* Inicialmente invisible */
+}
+
+.category:hover span {
+    opacity: 1; /* Al pasar el mouse, se hace visible */
+}
+.category:hover .img-container {
+    filter: brightness(0.5); /* Oscurece la imagen */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Añade sombra al pasar el mouse */
+}
