@@ -4,6 +4,7 @@ import { Product } from '../types/api';
 import { getApiErrorMessage } from '../hooks/useApiError';
 import { cartService } from '../services/cart.service';
 import { useAuth } from '../context/AuthContext';
+import { FeaturedProducts } from '../components/home/FeaturedProducts';
 
 export const ProductsPage = () => {
   const { isAuthenticated } = useAuth();
@@ -34,6 +35,7 @@ export const ProductsPage = () => {
   return (
     <main className="container">
       <h1>Productos</h1>
+      <FeaturedProducts onAddToCart={onAdd} />
       {error ? <p className="error">{error}</p> : null}
       <section className="grid">
         {products.map((product) => (
