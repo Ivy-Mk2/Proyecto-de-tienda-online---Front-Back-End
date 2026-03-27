@@ -1,4 +1,3 @@
-import SideBar from "./Sidebar";
 import Logo from "./Logo";
 import User from "./User";
 import CartDropdown from "./CartDropdown";

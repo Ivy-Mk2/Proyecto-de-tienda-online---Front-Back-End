@@ -1,5 +1,6 @@
 import useDropdown from '../Hooks/hooks';
 import product1 from '../../Img/producto1.jpg';
+import './CartDropdown.css';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../hooks/useCart';
 import { OptimizedImage } from '../ui';
