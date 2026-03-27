@@ -1,28 +1,42 @@
 # 06-BaseDeDatos
 
-## Modelo conceptual
+## Motor y acceso
+- Motor: **MySQL**.
+- ORM: **Prisma** (`BackEnd/prisma/schema.prisma`).
 
-### Entidades principales
-- **User**: identidad, rol, proveedor auth.
-- **Product**: catálogo, precio, stock, atributos, activo/destacado.
-- **Cart**: carrito por usuario o invitado.
-- **Order**: orden de compra con estado y pago.
-- **Favorite**: relación usuario-producto favorito.
-- **Banner**: contenido promocional.
+## Entidades principales
+- `User`
+- `RefreshToken`
+- `Product`
+- `ProductImage`
+- `Cart`
+- `CartItem`
+- `Favorite`
+- `Order`
+- `OrderItem`
+- `Banner`
 
 ## Relaciones clave
-- Un `User` puede tener múltiples `Order`, `Favorite` y `RefreshToken`.
-- `Cart` se asocia a `User` (opcional) o `guestToken`.
-- `Cart` contiene múltiples `CartItem`, cada uno asociado a un `Product`.
-- `Order` contiene múltiples `OrderItem` con snapshots de datos.
+- `User` 1:N `RefreshToken`, `Favorite`, `Order`.
+- `User` 1:N `Cart` (con unicidad por `userId`).
+- `Cart` 1:N `CartItem`.
+- `Product` 1:N `ProductImage`, `CartItem`, `OrderItem`.
+- `Favorite` resuelve N:M entre `User` y `Product`.
+- `Order` 1:N `OrderItem`.
 
-## ERD (Mermaid)
+## Reglas y constraints relevantes
+- `Cart` tiene `@@unique([userId])` y `@@unique([guestToken])`.
+- `CartItem` tiene `@@unique([cartId, productId])`.
+- `Favorite` tiene `@@unique([userId, productId])`.
+- `OrderItem` persiste snapshots (`productNameSnapshot`, `unitPriceSnapshot`) para trazabilidad histórica.
+
+## ERD simplificado
 ```mermaid
 erDiagram
   User ||--o{ RefreshToken : has
-  User ||--o| Cart : owns
   User ||--o{ Favorite : marks
   User ||--o{ Order : places
+  User ||--o{ Cart : owns
 
   Product ||--o{ ProductImage : has
   Product ||--o{ CartItem : in
@@ -31,43 +45,8 @@ erDiagram
 
   Cart ||--o{ CartItem : contains
   Order ||--o{ OrderItem : contains
-
-  User {
-    string id PK
-    string email
-    string role
-    string authProvider
-  }
-  Product {
-    string id PK
-    string name
-    decimal price
-    int stock
-    boolean isActive
-  }
-  Cart {
-    string id PK
-    string userId FK
-    string guestToken
-  }
-  Order {
-    string id PK
-    string userId FK
-    decimal total
-    string paymentStatus
-  }
-  Favorite {
-    string id PK
-    string userId FK
-    string productId FK
-  }
-  Banner {
-    string id PK
-    string title
-    string imageUrl
-    boolean isActive
-  }
 ```
 
-## Nota de diseño
-El modelo ya contempla evolución hacia OAuth y pasarelas de pago reales sin rediseño total.
+## Decisiones de evolución ya soportadas
+- `authProvider` y `providerId` en `User` para OAuth futuro.
+- `paymentProvider` y `externalPaymentId` en `Order` para integrar pasarela real.
