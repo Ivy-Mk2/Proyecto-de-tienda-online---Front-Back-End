@@ -1,4 +1,4 @@
-import Header from '../components/Header/Header';
+import Header from '../layout/header';
 import Footer from '../components/Footer/Footer';
 import Featured from '../components/Featured/Featured';
 import './CartPage.css';
