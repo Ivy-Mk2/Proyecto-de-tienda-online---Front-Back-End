@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import useDropdown from "../Hooks/hooks";
 
 
@@ -16,10 +17,8 @@ const User = () => {
                     <form className="header__login-form">
                         <label htmlFor="username">Usuario:</label>
                         <input type="text" id="username" name="username" required/>
-                        
                         <label htmlFor="password">Contraseña:</label>
-                        <input type="password" id="password" name="password" required/>
-                        
+                        <input type="password" id="password" name="password" required/>                  
                         <button type="submit">Iniciar sesión</button>
                         <div className="login__options">
                             <ul>

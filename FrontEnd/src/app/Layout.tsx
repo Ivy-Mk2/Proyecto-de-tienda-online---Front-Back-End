@@ -1,5 +1,7 @@
 import { Link, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Header from '../components/Header/Header';
+
 
 export const Layout = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -7,13 +9,8 @@ export const Layout = () => {
   return (
     <>
       <header className="topbar">
-        <nav>
-          <Link to="/">Productos</Link>
-          <Link to="/cart">Carrito</Link>
-          <Link to="/orders">Órdenes</Link>
-          <Link to="/admin">Admin</Link>
-        </nav>
-        <div>
+        <Header />
+        <div> 
           {isAuthenticated ? (
             <>
               <span>{user?.email}</span>
