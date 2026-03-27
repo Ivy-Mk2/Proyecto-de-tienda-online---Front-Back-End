@@ -1,42 +1,38 @@
 # 01-Arquitectura
 
-## Diagrama general del sistema
+## Arquitectura general del sistema
 ```mermaid
 flowchart LR
-  U[Usuario] --> FE[FrontEnd\nReact + Vite]
-  FE -->|HTTP/JSON + Bearer JWT| API[BackEnd API\nExpress + TypeScript]
-  API --> SVC[Services por dominio]
-  SVC --> ORM[Prisma Client]
+  U[Usuario] --> FEA[FrontEnd\nReact + Vite\n(API integrada)]
+  U --> FEB[react-app\nReact + Vite\n(UI/mocks)]
+
+  FEA -->|HTTP JSON + Bearer| API[BackEnd API\nExpress + TS]
+  API --> ROUTES[Routes v1]
+  ROUTES --> MOD[Controllers + Services por dominio]
+  MOD --> ORM[Prisma Client]
   ORM --> DB[(MySQL)]
-  API --> FS[(Uploads local)]
+  API --> FS[(uploads/)]
 ```
 
-## Capas del sistema
+## Capas y responsabilidades
 
-### 1) FrontEnd
-Responsable de UI, navegación, estado de sesión y consumo de endpoints.
+### 1) Capa de presentación
+- `FrontEnd/`: SPA con integración real contra backend.
+- `react-app/`: SPA enfocada en UI y estado local/mocks.
 
-### 2) API (Express)
-Expone rutas REST (`/api/v1`), aplica middlewares (CORS, auth, validación, errores) y orquesta casos de uso.
+### 2) Capa HTTP/API
+- `BackEnd/src/app.ts`: middlewares globales (`helmet`, `cors`, `morgan`, `express.json`).
+- `BackEnd/src/routes/v1.ts`: composición de rutas versionadas `/api/v1`.
 
-### 3) Services
-Contienen la lógica de negocio por dominio (`auth`, `products`, `cart`, etc.).
+### 3) Capa de negocio
+- Dominios en `BackEnd/src/modules/*` con patrón `routes -> controller -> service`.
 
-### 4) Prisma
-Capa de acceso a datos tipada para consultas y mutaciones.
+### 4) Capa de datos
+- Prisma (`BackEnd/prisma/schema.prisma`) como acceso tipado.
+- MySQL como persistencia principal.
 
-### 5) MySQL
-Persistencia principal de usuarios, productos, carritos, órdenes, favoritos, banners y tokens.
-
-## Vista de responsabilidades
-```mermaid
-flowchart TB
-  FE[FrontEnd] --> API[Controller + Route]
-  API --> SV[Service]
-  SV --> PR[Prisma]
-  PR --> DB[(MySQL)]
-
-  API --> AUTH[Auth & Roles]
-  API --> VAL[Validación Zod]
-  API --> ERR[Manejo de errores]
-```
+## Principios usados
+- Separación por dominios de negocio.
+- Validación de entrada con Zod por endpoint.
+- Seguridad centralizada por middlewares (`requireAuth`, `requireRole`).
+- Evolución gradual: coexistencia de frontend integrado y frontend legacy.

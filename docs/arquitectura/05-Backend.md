@@ -1,43 +1,67 @@
 # 05-Backend
 
-## Arquitectura actual del backend
-
-El backend sigue una estructura modular por dominio, con separación de responsabilidades:
-
-- `modules/`: dominios (`auth`, `products`, `cart`, `favorites`, `orders`, `banners`, `uploads`).
-- `routes/`: composición de rutas versionadas (`/api/v1`).
-- `controllers/`: capa HTTP (request/response).
-- `services/`: lógica de negocio y reglas.
-- `prisma/`: cliente y modelo de datos.
-- `shared/`: middlewares, errores, utilidades, tipos globales.
+## Estructura backend actual
+```text
+BackEnd/
+  src/
+    app.ts
+    server.ts
+    config/
+    routes/
+    modules/
+      auth/
+      products/
+      cart/
+      favorites/
+      orders/
+      banners/
+      uploads/
+      admin/ (documentación)
+      users/ (documentación)
+    prisma/
+    shared/
+  prisma/
+    schema.prisma
+    migrations/
+    seed.ts
+  uploads/
+```
 
 ## Flujo interno estándar
 ```mermaid
 flowchart LR
-  R[Route] --> C[Controller]
-  C --> S[Service]
-  S --> P[Prisma Client]
-  P --> DB[(MySQL)]
-```
-
-## Flujo con middleware
-```mermaid
-flowchart TD
-  A[Request] --> B[Middlewares]
-  B --> B1[Auth/JWT]
-  B --> B2[Validación Zod]
-  B --> B3[Rate limit]
-  B1 --> C[Controller]
-  B2 --> C
-  B3 --> C
+  A[Route] --> B[Validate Zod]
+  B --> C[Controller]
   C --> D[Service]
   D --> E[Prisma]
-  E --> F[(DB)]
-  F --> G[Response]
-  G --> H[Error handler central]
+  E --> F[(MySQL)]
 ```
 
+## Middlewares globales
+- `helmet` para cabeceras de seguridad.
+- `cors` con origen configurado por variable de entorno.
+- `morgan` para logging HTTP.
+- `express.json` para parseo de payload JSON.
+- `notFoundHandler` + `errorHandler` centralizados.
+
+## Seguridad por endpoint
+- `requireAuth` en rutas privadas.
+- `requireRole(UserRole.ADMIN)` en operaciones administrativas.
+- Validación de payload/query/params con esquemas Zod por módulo.
+
+## Endpoints versionados
+Base: `GET/POST/... /api/v1`
+
+- `/health`
+- `/auth/*`
+- `/products/*`
+- `/cart/*`
+- `/favorites/*`
+- `/orders/*`
+- `/banners/*`
+- `/uploads/*` (estático)
+
 ## Fortalezas actuales
-- Base modular clara para escalar.
-- Integración de seguridad y validación desde la capa HTTP.
-- Prisma simplifica mantenibilidad del acceso a datos.
+- Dominio de e-commerce bien cubierto para MVP ampliado.
+- Modelo de datos preparado para OAuth y proveedor de pago externo.
+- Diseño orientado a migración progresiva desde frontend local/mocks.
