@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Header from '../components/Header/Header';
+import Header from '../layout/header';
 import Footer from '../components/Footer/Footer';
 import { Badge, OptimizedImage, PageStatus } from '../components/ui';
 import { useProducts } from '../hooks/useProducts';

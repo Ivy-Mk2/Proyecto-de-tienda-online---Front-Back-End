@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import CartPage from '../pages/CartPage';
 import { useShopStore } from '../store/useShopStore';
 
-vi.mock('../components/Header/Header', () => ({ default: () => <div>Header</div> }));
+vi.mock('../layout/header', () => ({ default: () => <div>Header</div> }));
 vi.mock('../components/Footer/Footer', () => ({ default: () => <div>Footer</div> }));
 vi.mock('../components/Featured/Featured', () => ({ default: () => <div>Featured</div> }));
 
