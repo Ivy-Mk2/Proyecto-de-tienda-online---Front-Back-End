@@ -109,3 +109,30 @@
     opacity: 1; /* Imagen activa visible */
     z-index: 2;
 }
+
+.banner--status {
+    min-height: 28rem;
+    display: grid;
+    place-content: center;
+    gap: 1.2rem;
+    background: #111;
+    padding: 2rem;
+}
+
+.banner__status {
+    color: #fff;
+    font-size: 1.8rem;
+    text-align: center;
+    max-width: 64rem;
+}
+
+.banner__retry {
+    justify-self: center;
+    border: 1px solid #fff;
+    background: transparent;
+    color: #fff;
+    padding: 0.8rem 1.4rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+

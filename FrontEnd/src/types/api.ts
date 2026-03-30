@@ -74,3 +74,17 @@ export type ApiError = {
   message: string;
   issues?: unknown;
 };
+
+
+export type Banner = {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  imageUrl: string;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  isActive: boolean;
+  orderIndex: number;
+  createdAt: string;
+  updatedAt: string;
+};

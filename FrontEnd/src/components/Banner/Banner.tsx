@@ -1,78 +1,117 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import "./Banner.css";
-import img0 from "../../Img/0.jpg";
-import img1 from "../../Img/WhatsApp-Image-2019-06-11-at-18.04.17.jpg";
-import img2 from "../../Img/ade9d580-d18c-4bad-a4b4-11f7e7f8f25d_skate-caps-web.jpg";
-const images = [img0, img1, img2]; // Array de imágenes
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useBanners } from '../../hooks/useBanners';
+import './Banner.css';
 
-const  Banner = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const totalImages = 3; // Número total de imágenes
-   
-    const handleNext = () => {
-        setActiveIndex((prevIndex) => (prevIndex + 1) % totalImages);
-    };
+const AUTO_ROTATE_MS = 5000;
 
-    const handlePrev = () => {
-        setActiveIndex((prevIndex) => (prevIndex - 1 + totalImages) % totalImages);
-    };
-    const toggleSelector = (index: number) => {
-      setActiveIndex(index); // Cambia el ícono activo al índice actual
-    }; 
+const Banner = () => {
+  const { banners, loading, error, reload } = useBanners();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveIndex((prevIndex) =>
-                prevIndex === images.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 5000); // Cambia la imagen cada 5 segundos
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [banners.length]);
 
-        return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
-    }, [images.length]);
-      
-    return(
+  useEffect(() => {
+    if (banners.length <= 1) return;
 
-        <>
-            <section className="banner">
-                <div className="banner__content">
-                    <h2 className="banner__title">New <br/> Arrivals</h2>
-                    <p className="banner__description">¡MIRA NUESTRA ÚLTIMA COLECCIÓN PRIMAVERA/VERANO 2024! TODA LA COLECCIÓN ESTÁ INSPIRADA EN LA MODA ASIÁTICA MODERNA Y EL ESTILO CALLEJERO AMERICANO ATEMPORAL.</p>
-                    <Link to="/productos" className="banner__link">¡Muéstrame más!</Link>
-                </div>
-                <div className="banner__arrows">
-                    <i className="banner__arrow-left fa-solid fa-arrow-left" onClick={handlePrev}></i>
-                    <i className="banner__arrow-right fa-solid fa-arrow-right" onClick={handleNext}></i>
-                </div>
-                <div className="banner__selector">
-                    {[0, 1, 2].map((index) => (
-                        <i
-                            key={index}
-                            className={`fa-circle ${activeIndex === index ? 'fa-solid' : 'fa-regular'}`}
-                            onClick={() => toggleSelector(index)}
-                        ></i>
-                    ))}
-                </div>
-                <div className="banner_images">
-                    <div className="gradient-overlay"></div> 
-                    {images.map((src, index) => (
-                        <img
-                            key={index}
-                            src={src}
-                            alt={`Banner ${index}`}
-                            className={`banner__image ${
-                                index === activeIndex
-                                    ? "active"
-                                    : index === (activeIndex === 0 ? images.length - 1 : activeIndex - 1)
-                                    ? "previous"
-                                    : ""
-                            }`}
-                        />
-                    ))}
-                </div>
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    }, AUTO_ROTATE_MS);
 
-            </section>
-        </>
+    return () => clearInterval(interval);
+  }, [banners.length]);
+
+  const handleNext = () => {
+    if (!banners.length) return;
+    setActiveIndex((prevIndex) => (prevIndex + 1) % banners.length);
+  };
+
+  const handlePrev = () => {
+    if (!banners.length) return;
+    setActiveIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
+  };
+
+  if (loading) {
+    return (
+      <section className="banner banner--status">
+        <p className="banner__status">Cargando banners...</p>
+      </section>
     );
-}
+  }
+
+  if (error) {
+    return (
+      <section className="banner banner--status">
+        <p className="banner__status">No se pudieron cargar los banners: {error}</p>
+        <button className="banner__retry" onClick={() => void reload()}>
+          Reintentar
+        </button>
+      </section>
+    );
+  }
+
+  if (!banners.length) {
+    return (
+      <section className="banner banner--status">
+        <p className="banner__status">No hay banners activos disponibles.</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="banner">
+      <div className="banner__content">
+        <h2 className="banner__title">{banners[activeIndex].title}</h2>
+        {banners[activeIndex].subtitle ? (
+          <p className="banner__description">{banners[activeIndex].subtitle}</p>
+        ) : null}
+        {banners[activeIndex].ctaText ? (
+          <Link to={banners[activeIndex].ctaLink || '/productos'} className="banner__link">
+            {banners[activeIndex].ctaText}
+          </Link>
+        ) : null}
+      </div>
+
+      {banners.length > 1 ? (
+        <>
+          <div className="banner__arrows">
+            <i className="banner__arrow-left fa-solid fa-arrow-left" onClick={handlePrev}></i>
+            <i className="banner__arrow-right fa-solid fa-arrow-right" onClick={handleNext}></i>
+          </div>
+
+          <div className="banner__selector">
+            {banners.map((banner, index) => (
+              <i
+                key={banner.id}
+                className={`fa-circle ${activeIndex === index ? 'fa-solid' : 'fa-regular'}`}
+                onClick={() => setActiveIndex(index)}
+              ></i>
+            ))}
+          </div>
+        </>
+      ) : null}
+
+      <div className="banner_images">
+        <div className="gradient-overlay"></div>
+        {banners.map((banner, index) => (
+          <img
+            key={banner.id}
+            src={banner.imageUrl}
+            alt={banner.title}
+            className={`banner__image ${
+              index === activeIndex
+                ? 'active'
+                : index === (activeIndex === 0 ? banners.length - 1 : activeIndex - 1)
+                  ? 'previous'
+                  : ''
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
 export default Banner;
