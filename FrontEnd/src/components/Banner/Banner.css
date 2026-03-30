@@ -5,6 +5,7 @@
     background-position: center;
     overflow: hidden;
     position: relative;
+    height: clamp(34rem, 62vw, 82.5rem);
 }
 
 .banner__content {
@@ -12,7 +13,7 @@
     padding: 2rem 5rem;
     flex-direction: column;
     justify-content: flex-end;
-    height: 82.5rem;
+    height: 100%;
 }
 .banner__arrows{
     display: flex;
@@ -24,6 +25,7 @@
     padding: 0rem 3rem;
     opacity: 0;
     transition: opacity 0.5s ease;
+    z-index: 20;
 }
 .banner__arrows i {
     font-size: 6.5rem;
@@ -33,7 +35,7 @@
 
 .banner__title {
     color: #fff;
-    font-size: 9rem;
+    font-size: clamp(3.4rem, 8vw, 9rem);
     font-weight: 700;
     line-height: 0.8;
     text-transform: uppercase;
@@ -43,7 +45,7 @@
 
 .banner__description,.banner__link {
     color: #fff;
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-weight: 500;
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -57,6 +59,7 @@
     padding: 0rem 3rem;
     justify-content: center;
     gap: 1rem;
+    z-index: 20;
 }
 .banner__selector i{
     font-size: 2rem;
@@ -64,7 +67,7 @@
     cursor: pointer;
 }
 .banner:hover .banner__arrows {
-    opacity: 0.9; /* Hace que las flechas sean visibles */
+    opacity: 0.9;
 }
 .gradient-overlay {
     position: absolute;
@@ -73,41 +76,99 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(50deg, #000000, #00000020);
-    z-index: 10; /* Coloca esta capa encima de la imagen */
+    z-index: 10;
 }
 .banner_images{
     position: absolute;
-    bottom: 0 ;
-    z-index: -10;
+    inset: 0;
+    z-index: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
     overflow: hidden;
-    
 }
-.banner_images img {
+
+.banner__image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease-in-out;
-    transform: translateX(100%);
-    opacity: 0; /* Oculta imágenes que no están activas */
-    z-index: 0;
-}
-.banner_images img.active {
     transform: translateX(0);
-    opacity: 1; /* Imagen activa visible */
+    opacity: 0;
+    z-index: 1;
+}
+
+.banner__image.active {
+    opacity: 1;
+    z-index: 3;
+}
+
+.banner__image.active.from-right {
+    animation: slide-in-right 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banner__image.active.from-left {
+    animation: slide-in-left 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banner__image.exit {
+    opacity: 1;
     z-index: 2;
 }
 
-.banner_images img.previous {
-    transform: translateX(-100%); /* Imagen desplazada hacia la izquierda */
-    opacity: 1; /* Imagen activa visible */
-    z-index: 2;
+.banner__image.exit.to-left {
+    animation: slide-out-left 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banner__image.exit.to-right {
+    animation: slide-out-right 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(22%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-22%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-left {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-22%);
+        opacity: 0;
+    }
+}
+
+@keyframes slide-out-right {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(22%);
+        opacity: 0;
+    }
 }
 
 .banner--status {
@@ -135,4 +196,3 @@
     font-size: 1.4rem;
     cursor: pointer;
 }
-
