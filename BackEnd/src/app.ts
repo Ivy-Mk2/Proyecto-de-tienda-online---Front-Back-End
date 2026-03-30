@@ -10,7 +10,12 @@ import { notFoundHandler } from './shared/middleware/not-found';
 
 export const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
+
 app.use(cors({ origin: env.CORS_ORIGIN }));
 app.use(morgan('dev'));
 app.use(express.json());

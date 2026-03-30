@@ -94,7 +94,7 @@ async function main() {
       {
         title: 'Nueva Colección Otoño',
         subtitle: 'Descubrí lo último de la temporada',
-        imageUrl: '/uploads/banner-otono.jpg',
+        imageUrl: '/uploads/KanyeWest.jpg',
         ctaText: 'Ver productos',
         ctaLink: '/productos',
         isActive: true,
@@ -103,11 +103,20 @@ async function main() {
       {
         title: 'Ofertas de Semana',
         subtitle: 'Hasta 30% OFF en seleccionados',
-        imageUrl: '/uploads/banner-ofertas.jpg',
+        imageUrl: '/uploads/ade9d580-d18c-4bad-a4b4-11f7e7f8f25d_skate-caps-web.jpg',
         ctaText: 'Comprar ahora',
         ctaLink: '/productos?featured=true',
         isActive: true,
         orderIndex: 2,
+      },
+      {
+        title: 'Promocion imperdible',
+        subtitle: 'Hasta 30% OFF en seleccionados',
+        imageUrl: '/uploads/WhatsApp-Image-2019-06-11-at-18.04.17.jpg',
+        ctaText: 'Comprar ahora',
+        ctaLink: '/productos?featured=true',
+        isActive: true,
+        orderIndex: 3,
       },
     ],
   });

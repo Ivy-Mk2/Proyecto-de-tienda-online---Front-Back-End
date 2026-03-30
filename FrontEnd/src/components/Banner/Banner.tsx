@@ -4,6 +4,7 @@ import { useBanners } from '../../hooks/useBanners';
 import './Banner.css';
 
 const AUTO_ROTATE_MS = 5000;
+const API_URL = "http://localhost:4000";
 
 const Banner = () => {
   const { banners, loading, error, reload } = useBanners();
@@ -98,7 +99,7 @@ const Banner = () => {
         {banners.map((banner, index) => (
           <img
             key={banner.id}
-            src={banner.imageUrl}
+            src={`${API_URL}${banner.imageUrl}`}
             alt={banner.title}
             className={`banner__image ${
               index === activeIndex

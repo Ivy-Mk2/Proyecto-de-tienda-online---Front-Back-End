@@ -66,7 +66,7 @@ const CartDropdown = () => {
 
       <div className={`backdrop ${isActive ? 'active' : ''}`}></div>
       <div className={`cart__dropdown ${isActive ? 'cart__dropdown-active' : ''}`} ref={dropdownRef}>
-        <div className="dropdown__title">
+        <div className="dropdown__title" style={{display: cartCount > 0 ? 'flex' : 'none'}}>
           <i className="fa-solid fa-basket-shopping"></i>
           <div className="title__container">
             <span className="tittle__header">Mi Carrito</span>
