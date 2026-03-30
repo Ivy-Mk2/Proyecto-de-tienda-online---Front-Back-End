@@ -4,34 +4,67 @@ import { useBanners } from '../../hooks/useBanners';
 import './Banner.css';
 
 const AUTO_ROTATE_MS = 5000;
-const API_URL = "http://localhost:4000";
+const API_URL = 'http://localhost:4000';
+
+type SlideDirection = 'next' | 'prev';
 
 const Banner = () => {
   const { banners, loading, error, reload } = useBanners();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
+  const [direction, setDirection] = useState<SlideDirection>('next');
+  const [rotationSeed, setRotationSeed] = useState(0);
 
   useEffect(() => {
     setActiveIndex(0);
+    setPreviousIndex(null);
+    setDirection('next');
+    setRotationSeed((seed) => seed + 1);
   }, [banners.length]);
 
   useEffect(() => {
     if (banners.length <= 1) return;
 
     const interval = setInterval(() => {
+      setDirection('next');
+      setPreviousIndex(activeIndex);
       setActiveIndex((prevIndex) => (prevIndex + 1) % banners.length);
     }, AUTO_ROTATE_MS);
 
     return () => clearInterval(interval);
-  }, [banners.length]);
+  }, [activeIndex, banners.length, rotationSeed]);
+
+  const resetAutoRotate = () => {
+    setRotationSeed((seed) => seed + 1);
+  };
+
+  const goToIndex = (nextIndex: number, nextDirection: SlideDirection) => {
+    if (!banners.length) return;
+
+    const normalizedIndex = ((nextIndex % banners.length) + banners.length) % banners.length;
+
+    if (normalizedIndex === activeIndex) {
+      resetAutoRotate();
+      return;
+    }
+
+    setDirection(nextDirection);
+    setPreviousIndex(activeIndex);
+    setActiveIndex(normalizedIndex);
+    resetAutoRotate();
+  };
 
   const handleNext = () => {
-    if (!banners.length) return;
-    setActiveIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    goToIndex(activeIndex + 1, 'next');
   };
 
   const handlePrev = () => {
-    if (!banners.length) return;
-    setActiveIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
+    goToIndex(activeIndex - 1, 'prev');
+  };
+
+  const handleSelectorClick = (index: number) => {
+    const nextDirection: SlideDirection = index > activeIndex ? 'next' : 'prev';
+    goToIndex(index, nextDirection);
   };
 
   if (loading) {
@@ -87,7 +120,7 @@ const Banner = () => {
               <i
                 key={banner.id}
                 className={`fa-circle ${activeIndex === index ? 'fa-solid' : 'fa-regular'}`}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleSelectorClick(index)}
               ></i>
             ))}
           </div>
@@ -96,20 +129,18 @@ const Banner = () => {
 
       <div className="banner_images">
         <div className="gradient-overlay"></div>
-        {banners.map((banner, index) => (
-          <img
-            key={banner.id}
-            src={`${API_URL}${banner.imageUrl}`}
-            alt={banner.title}
-            className={`banner__image ${
-              index === activeIndex
-                ? 'active'
-                : index === (activeIndex === 0 ? banners.length - 1 : activeIndex - 1)
-                  ? 'previous'
-                  : ''
-            }`}
-          />
-        ))}
+        {banners.map((banner, index) => {
+          const isActive = index === activeIndex;
+          const isPrevious = index === previousIndex;
+
+          const imageClass = isActive
+            ? `banner__image active ${direction === 'next' ? 'from-right' : 'from-left'}`
+            : isPrevious
+              ? `banner__image exit ${direction === 'next' ? 'to-left' : 'to-right'}`
+              : 'banner__image';
+
+          return <img key={banner.id} src={`${API_URL}${banner.imageUrl}`} alt={banner.title} className={imageClass} />;
+        })}
       </div>
     </section>
   );
