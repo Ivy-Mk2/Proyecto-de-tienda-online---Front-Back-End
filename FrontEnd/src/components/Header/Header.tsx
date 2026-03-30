@@ -8,8 +8,8 @@ const Header = () => {
     <div className="header">
       <Logo />
       <div className="header__user-container">
-        <CartDropdown />
         <User />
+        <CartDropdown />
       </div>
     </div>
   );
