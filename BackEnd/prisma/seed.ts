@@ -136,7 +136,7 @@ async function main() {
   await prisma.banner.createMany({
     data: [
       {
-        title: 'Nueva Colección Otoño',
+        title: 'Colección Otoño',
         subtitle: 'Descubrí lo último de la temporada',
         imageUrl: '/uploads/KanyeWest.jpg',
         ctaText: 'Ver productos',
