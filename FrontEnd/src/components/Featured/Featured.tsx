@@ -85,7 +85,7 @@ const Featured = () => {
     void loadFavorites();
   }, [isAuthenticated]);
 
-  const skeletonItems = useMemo(() => Array.from({ length: 4 }, (_, index) => `skeleton-${index}`), []);
+  const skeletonItems = useMemo(() => Array.from({ length: 6 }, (_, index) => `skeleton-${index}`), []);
 
   const handleAddToCart = async (productId: string) => {
     try {
