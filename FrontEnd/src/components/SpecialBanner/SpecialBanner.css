@@ -34,36 +34,12 @@
   z-index: 2;
   overflow: hidden;
   display: flex;
+  align-items: center;
   background: linear-gradient(to top, rgb(0 0 0 / 42%), transparent);
   padding: 0.8rem 0;
-}
-
-.special-banner__track {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  min-width: max-content;
-  animation: special-banner-marquee 20s linear infinite;
-}
-
-.special-banner__marquee-item {
-  flex: 0 0 auto;
-  margin-right: 2rem;
   color: #fff;
   font-size: clamp(1.6rem, 1.5vw, 2.2rem);
   line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-@keyframes special-banner-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-100%);
-  }
 }
 
 @media (max-width: 900px) {
@@ -77,9 +53,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .special-banner__track,
   .special-banner__image {
-    animation: none;
     transition: none;
   }
 }
