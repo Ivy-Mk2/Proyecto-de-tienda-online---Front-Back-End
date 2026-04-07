@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { useBanners } from '../../hooks/useBanners';
 import { Banner } from '../../types/api';
 import './SpecialBanner.css';
+import Marquee from '../Marquee/Marquee';
 
 const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/api\/v\d+$/, '');
 const MAX_SPECIAL_BANNERS = 2;
-const MARQUEE_REPETITIONS = 8;
 
 const resolveImageUrl = (imageUrl?: string) => {
   if (!imageUrl) return '';
@@ -40,12 +40,6 @@ const SpecialBanner = () => {
       {specialBanners.map((banner) => {
         const bannerLabel = getBannerLabel(banner);
 
-        const repeatedText = Array.from({ length: MARQUEE_REPETITIONS }, (_, index) => (
-          <span key={`${banner.id}-marquee-${index}`} className="special-banner__marquee-item" aria-hidden="true">
-            {bannerLabel}
-          </span>
-        ));
-
         return (
           <article className="special-banner__block" key={banner.id}>
             <img
@@ -55,10 +49,7 @@ const SpecialBanner = () => {
               loading="lazy"
             />
 
-            <div className="special-banner__marquee" role="presentation">
-              <div className="special-banner__track">{repeatedText}</div>
-              <div className="special-banner__track">{repeatedText}</div>
-            </div>
+            <Marquee text={bannerLabel} speed={20} className="special-banner__marquee" />
           </article>
         );
       })}
