@@ -10,7 +10,7 @@ export const Layout = () => {
       <Header />
       <Banner />
       <Featured />
-      <Outlet />
+      
     </>
   );
 };
