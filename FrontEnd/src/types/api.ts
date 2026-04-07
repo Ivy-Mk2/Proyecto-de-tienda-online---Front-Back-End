@@ -80,11 +80,14 @@ export type Banner = {
   id: string;
   title: string;
   subtitle?: string | null;
+  label?: string | null;
   imageUrl: string;
+  altText?: string | null;
   ctaText?: string | null;
   ctaLink?: string | null;
   isActive: boolean;
   orderIndex: number;
+  order?: number | null;
   createdAt: string;
   updatedAt: string;
 };
