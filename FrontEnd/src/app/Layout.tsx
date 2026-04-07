@@ -9,8 +9,8 @@ export const Layout = () => {
     <>
       <Header />
       <Banner />
-      <SpecialBanner />
       <Featured />
+      <SpecialBanner />
     </>
   );
 };
