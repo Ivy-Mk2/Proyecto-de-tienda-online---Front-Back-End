@@ -5,7 +5,6 @@ import { Product } from '../types/api';
 import { getApiErrorMessage } from '../hooks/useApiError';
 import { cartService } from '../services/cart.service';
 import { useAuth } from '../context/AuthContext';
-import { FeaturedProducts } from '../components/home/FeaturedProducts';
 
 export const ProductsPage = () => {
   const { isAuthenticated } = useAuth();
@@ -40,7 +39,6 @@ export const ProductsPage = () => {
     <main className="container">
       <h1>Productos</h1>
       {selectedCategory ? <p>Categoría activa: {selectedCategory}</p> : null}
-      <FeaturedProducts onAddToCart={onAdd} />
       {error ? <p className="error">{error}</p> : null}
       <section className="grid">
         {products.map((product) => (
