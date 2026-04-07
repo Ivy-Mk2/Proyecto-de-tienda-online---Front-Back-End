@@ -1,0 +1,141 @@
+.marquee {
+  width: min(1200px, calc(100% - 3rem));
+  margin: 2.5rem auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.5vw, 1.6rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #111;
+  color: #fff;
+  padding: 0.8rem 1.4rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.controls button {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.controls button:hover {
+  background: #111;
+  color: #fff;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 60px) / 4);
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  padding-bottom: 0.35rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  scroll-snap-align: start;
+}
+
+.imageWrap {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.price {
+  position: absolute;
+  left: 0.65rem;
+  bottom: 0.65rem;
+  background: #fff;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.content {
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.content h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.content p {
+  margin: 0;
+  color: #525252;
+  font-size: 0.92rem;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+.state {
+  margin: 0;
+  color: #4b5563;
+}
+
+@media (max-width: 1024px) {
+  .track {
+    grid-auto-columns: calc((100% - 20px) / 2);
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee {
+    width: calc(100% - 1.5rem);
+    margin: 1.75rem auto;
+  }
+
+  .track {
+    grid-auto-columns: 100%;
+  }
+
+  .title {
+    padding: 0.65rem 1.1rem;
+  }
+}
