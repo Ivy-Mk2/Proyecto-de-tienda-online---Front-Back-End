@@ -2,6 +2,7 @@ import Header from '../components/Header/Header';
 import Banner from '../components/Banner/Banner';
 import SpecialBanner from '../components/SpecialBanner/SpecialBanner';
 import Featured from '../components/Featured/Featured';
+import Marquee from '../components/Marquee/Marquee';
 import './Layout.css';
 
 export const Layout = () => {
@@ -10,6 +11,7 @@ export const Layout = () => {
       <Header />
       <Banner />
       <Featured />
+      <Marquee />
       <SpecialBanner />
     </>
   );
