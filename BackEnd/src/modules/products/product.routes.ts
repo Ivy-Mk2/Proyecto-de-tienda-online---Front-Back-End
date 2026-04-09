@@ -16,6 +16,7 @@ import {
 const router = Router();
 
 router.get('/', validate(listProductsSchema), asyncHandler(productController.list));
+router.get('/body-sections', asyncHandler(productController.listBodySections));
 router.get('/:id', validate(productParamSchema), asyncHandler(productController.getById));
 
 router.post(
