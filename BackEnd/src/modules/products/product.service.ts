@@ -15,7 +15,30 @@ type ProductInput = {
   isActive?: boolean;
 };
 
+type BodySectionDTO = {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+};
+
 const productInclude = { images: { orderBy: { order: 'asc' as const } } };
+
+const toSectionId = (category: string) =>
+  category
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+const formatCategoryTitle = (category: string) =>
+  category
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 
 export const productService = {
   async list(filters: { category?: string; featured?: boolean; isActive?: boolean }) {
@@ -28,6 +51,43 @@ export const productService = {
       include: productInclude,
       orderBy: { createdAt: 'desc' },
     });
+  },
+
+  async listBodySections(): Promise<BodySectionDTO[]> {
+    const products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        category: {
+          not: '',
+        },
+      },
+      include: productInclude,
+      orderBy: [{ category: 'asc' }, { createdAt: 'desc' }],
+    });
+
+    const sectionsMap = new Map<string, BodySectionDTO>();
+
+    for (const product of products) {
+      const normalizedCategory = product.category.trim();
+
+      if (!normalizedCategory || sectionsMap.has(normalizedCategory)) {
+        continue;
+      }
+
+      const firstImage = product.images[0];
+      if (!firstImage?.imageUrl) {
+        continue;
+      }
+
+      sectionsMap.set(normalizedCategory, {
+        id: toSectionId(normalizedCategory),
+        title: formatCategoryTitle(normalizedCategory),
+        category: normalizedCategory,
+        imageUrl: firstImage.imageUrl,
+      });
+    }
+
+    return Array.from(sectionsMap.values());
   },
 
   async getById(id: string) {
