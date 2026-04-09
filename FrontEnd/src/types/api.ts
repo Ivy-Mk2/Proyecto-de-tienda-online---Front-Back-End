@@ -91,3 +91,11 @@ export type Banner = {
   createdAt: string;
   updatedAt: string;
 };
+
+
+export type BodySection = {
+  id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+};
