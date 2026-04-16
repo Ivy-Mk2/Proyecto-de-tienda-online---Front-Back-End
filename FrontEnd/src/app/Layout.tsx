@@ -5,6 +5,9 @@ import Featured from '../components/Featured/Featured';
 import Marquee from '../components/Marquee/Marquee';
 import SaleBanner from  '../components/SaleBanner/SaleBanner';
 import BodySection from '../components/BodySection/BodySection';
+import Announcement from '../components/Announcement/Announcement';
+import Newsletter from '../components/Newsletter/Newsletter';
+import Footer from '../components/Footer/Footer';
 import './Layout.css';
 
 export const Layout = () => {
@@ -17,6 +20,9 @@ export const Layout = () => {
       <Marquee />
       <SaleBanner />  
       <BodySection />
+      <Announcement />
+      <Newsletter />
+      <Footer />
     </>
   );
 };
