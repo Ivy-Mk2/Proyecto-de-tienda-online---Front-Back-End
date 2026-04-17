@@ -1,0 +1,34 @@
+
+.main-content{
+    display: flex;
+    margin-top: 5rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ede734;
+  }
+.announcement {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    background-color: #000;
+    color: #fff;
+  
+  }
+  .announcement__container{
+      margin: 0 auto; /* Centra el contenedor horizontalmente */
+      padding: 10rem 1rem; /* Añade un poco de padding lateral para evitar que toque los bordes */
+      max-width: 800px; /* Ajusta este valor según el diseño */
+    }
+  
+  .announcement h1 {
+    font-size: 3rem;
+    width: 100%;
+    text-align: center;
+  }
+  .announcement p {
+    font-size: 1.8rem;
+    padding: 5rem;
+    width: 100%;
+    text-align: justify;
+  }

@@ -2,7 +2,20 @@ import { apiRequest } from '../lib/api/client';
 import { tokens } from '../lib/api/tokens';
 import { Cart } from '../types/api';
 
+const CART_UPDATED_EVENT = 'cart:updated';
+
+const notifyCartUpdated = () => {
+  window.dispatchEvent(new Event(CART_UPDATED_EVENT));
+};
+
 export const cartService = {
+  CART_UPDATED_EVENT,
+
+  subscribeCartUpdates(listener: () => void) {
+    window.addEventListener(CART_UPDATED_EVENT, listener);
+    return () => window.removeEventListener(CART_UPDATED_EVENT, listener);
+  },
+
   getCart(isAuthenticated: boolean) {
     if (isAuthenticated) return apiRequest<Cart>('/cart', { auth: true });
 
@@ -10,9 +23,9 @@ export const cartService = {
     return apiRequest<Cart>(`/cart?guestToken=${guestToken}`);
   },
 
-  addItem(input: { productId: string; quantity: number; isAuthenticated: boolean }) {
+  async addItem(input: { productId: string; quantity: number; isAuthenticated: boolean }) {
     if (input.isAuthenticated) {
-      return apiRequest<Cart>('/cart/items', {
+      const cart = await apiRequest<Cart>('/cart/items', {
         method: 'POST',
         auth: true,
         body: {
@@ -20,9 +33,11 @@ export const cartService = {
           quantity: input.quantity,
         },
       });
+      notifyCartUpdated();
+      return cart;
     }
 
-    return apiRequest<Cart>('/cart/items', {
+    const cart = await apiRequest<Cart>('/cart/items', {
       method: 'POST',
       body: {
         productId: input.productId,
@@ -30,49 +45,61 @@ export const cartService = {
         guestToken: tokens.getGuestToken(),
       },
     });
+    notifyCartUpdated();
+    return cart;
   },
 
-  updateItem(input: {
+  async updateItem(input: {
     itemId: string;
     quantity: number;
     isAuthenticated: boolean;
   }) {
     if (input.isAuthenticated) {
-      return apiRequest<Cart>(`/cart/items/${input.itemId}`, {
+      const cart = await apiRequest<Cart>(`/cart/items/${input.itemId}`, {
         method: 'PATCH',
         auth: true,
         body: { quantity: input.quantity },
       });
+      notifyCartUpdated();
+      return cart;
     }
 
-    return apiRequest<Cart>(`/cart/items/${input.itemId}`, {
+    const cart = await apiRequest<Cart>(`/cart/items/${input.itemId}`, {
       method: 'PATCH',
       body: {
         quantity: input.quantity,
         guestToken: tokens.getGuestToken(),
       },
     });
+    notifyCartUpdated();
+    return cart;
   },
 
-  removeItem(input: { itemId: string; isAuthenticated: boolean }) {
+  async removeItem(input: { itemId: string; isAuthenticated: boolean }) {
     if (input.isAuthenticated) {
-      return apiRequest<Cart>(`/cart/items/${input.itemId}`, {
+      const cart = await apiRequest<Cart>(`/cart/items/${input.itemId}`, {
         method: 'DELETE',
         auth: true,
       });
+      notifyCartUpdated();
+      return cart;
     }
 
     const guestToken = tokens.getGuestToken();
-    return apiRequest<Cart>(`/cart/items/${input.itemId}?guestToken=${guestToken}`, {
+    const cart = await apiRequest<Cart>(`/cart/items/${input.itemId}?guestToken=${guestToken}`, {
       method: 'DELETE',
     });
+    notifyCartUpdated();
+    return cart;
   },
 
-  mergeGuestCart() {
-    return apiRequest<Cart>('/cart/merge', {
+  async mergeGuestCart() {
+    const cart = await apiRequest<Cart>('/cart/merge', {
       method: 'POST',
       auth: true,
       body: { guestToken: tokens.getGuestToken() },
     });
+    notifyCartUpdated();
+    return cart;
   },
 };

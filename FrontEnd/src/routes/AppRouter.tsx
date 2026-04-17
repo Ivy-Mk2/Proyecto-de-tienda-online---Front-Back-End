@@ -10,24 +10,19 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { RoleGuard, SessionGuard } from './guards';
 
 const router = createBrowserRouter([
+  { path: '/', element: <Layout /> },
+  { path: '/productos', element: <ProductsPage /> },
+  { path: '/cart', element: <CartPage /> },
+  { path: '/forbidden', element: <ForbiddenPage /> },
+  { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
   {
-    path: '/',
-    element: <Layout />,
+    element: <SessionGuard />,
     children: [
-      { index: true, element: <ProductsPage /> },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'register', element: <RegisterPage /> },
-      { path: 'cart', element: <CartPage /> },
-      { path: 'forbidden', element: <ForbiddenPage /> },
+      { path: '/orders', element: <OrdersPage /> },
       {
-        element: <SessionGuard />,
-        children: [
-          { path: 'orders', element: <OrdersPage /> },
-          {
-            element: <RoleGuard allowedRole="ADMIN" />,
-            children: [{ path: 'admin', element: <AdminPage /> }],
-          },
-        ],
+        element: <RoleGuard allowedRole="ADMIN" />,
+        children: [{ path: '/admin', element: <AdminPage /> }],
       },
     ],
   },

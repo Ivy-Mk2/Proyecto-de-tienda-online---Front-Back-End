@@ -16,6 +16,11 @@ export const productController = {
     res.json(products);
   },
 
+  async listBodySections(_req: Request, res: Response) {
+    const sections = await productService.listBodySections();
+    res.json(sections);
+  },
+
   async getById(req: Request, res: Response) {
     const product = await productService.getById(req.params.id);
     res.json(product);
