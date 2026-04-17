@@ -1,3 +1,9 @@
+# react-app (solo referencia visual)
+
+> ⚠️ **Importante:** esta carpeta es únicamente una referencia visual/legacy.
+> La implementación funcional activa del frontend vive en `../FrontEnd`.
+> No usar `react-app` como base de lógica de negocio ni de integración con API.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

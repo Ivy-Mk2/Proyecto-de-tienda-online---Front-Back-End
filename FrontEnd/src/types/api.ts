@@ -12,7 +12,7 @@ export type PublicUser = {
 export type AuthResponse = {
   user: PublicUser;
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string;
 };
 
 export type ProductImage = {
