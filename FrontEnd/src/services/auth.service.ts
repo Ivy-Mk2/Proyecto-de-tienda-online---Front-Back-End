@@ -9,7 +9,6 @@ export const authService = {
       body: input,
     });
     tokens.setAccessToken(result.accessToken);
-    tokens.setRefreshToken(result.refreshToken);
     return result.user;
   },
 
@@ -19,7 +18,6 @@ export const authService = {
       body: input,
     });
     tokens.setAccessToken(result.accessToken);
-    tokens.setRefreshToken(result.refreshToken);
     return result.user;
   },
 
@@ -27,15 +25,16 @@ export const authService = {
     return apiRequest<PublicUser>('/auth/me', { auth: true });
   },
 
-  async logout() {
-    const refreshToken = tokens.getRefreshToken();
+  async refresh() {
+    return apiRequest<{ accessToken: string }>('/auth/refresh', {
+      method: 'POST',
+    });
+  },
 
-    if (refreshToken) {
-      await apiRequest<void>('/auth/logout', {
-        method: 'POST',
-        body: { refreshToken },
-      });
-    }
+  async logout() {
+    await apiRequest<void>('/auth/logout', {
+      method: 'POST',
+    });
 
     tokens.clearSession();
   },
