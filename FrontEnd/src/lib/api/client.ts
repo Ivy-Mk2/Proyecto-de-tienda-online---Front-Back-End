@@ -25,13 +25,10 @@ const refreshAccessToken = async (): Promise<string | null> => {
   if (refreshPromise) return refreshPromise;
 
   refreshPromise = (async () => {
-    const refreshToken = tokens.getRefreshToken();
-    if (!refreshToken) return null;
-
     const response = await fetch(`${API_URL}/auth/refresh`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
     });
 
     if (!response.ok) {
@@ -70,6 +67,7 @@ export const apiRequest = async <T>(path: string, options: RequestOptions = {}):
 
   const response = await fetch(`${API_URL}${path}`, {
     method,
+    credentials: 'include',
     headers,
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
   });

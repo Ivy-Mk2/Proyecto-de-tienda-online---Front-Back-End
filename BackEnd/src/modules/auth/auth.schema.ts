@@ -16,9 +16,12 @@ export const loginSchema = z.object({
 });
 
 export const refreshSchema = z.object({
-  body: z.object({
-    refreshToken: z.string().min(10),
-  }),
+  body: z
+    .object({
+      refreshToken: z.string().min(10).optional(),
+    })
+    .optional()
+    .default({}),
 });
 
 export const logoutSchema = refreshSchema;

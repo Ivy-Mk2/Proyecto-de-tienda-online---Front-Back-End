@@ -21,12 +21,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const syncUser = useCallback(async () => {
-    const hasToken = Boolean(tokens.getAccessToken() || tokens.getRefreshToken());
+    const hasToken = Boolean(tokens.getAccessToken());
 
     if (!hasToken) {
-      setUser(null);
-      setLoading(false);
-      return;
+      try {
+        const refreshed = await authService.refresh();
+        tokens.setAccessToken(refreshed.accessToken);
+      } catch {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
     }
 
     try {
