@@ -28,7 +28,7 @@ const User = () => {
                         </div>
                     </form>
                     <div className="header__register-link">
-                        <p>¿No eres usuario? <Link to="/registro" >Regístrate aquí</Link></p>
+                        <p>¿No eres usuario? <Link to="/register" >Regístrate aquí</Link></p>
                     </div>
                 </div>
             </div>
