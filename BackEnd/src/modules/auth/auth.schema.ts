@@ -15,6 +15,18 @@ export const loginSchema = z.object({
   }),
 });
 
+export const googleAuthSchema = z.object({
+  body: z.object({
+    credential: z.string().min(10),
+  }),
+});
+
+export const facebookAuthSchema = z.object({
+  body: z.object({
+    accessToken: z.string().min(10),
+  }),
+});
+
 export const refreshSchema = z.object({
   body: z.object({
     refreshToken: z.string().min(10),
