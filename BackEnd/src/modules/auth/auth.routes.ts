@@ -20,6 +20,8 @@ router.post(
   validate(registerSchema),
   asyncHandler(authController.register),
 );
+router.get('/google', asyncHandler(authController.google));
+router.get('/google/callback', asyncHandler(authController.googleCallback));
 router.post('/login', authLimiter, validate(loginSchema), asyncHandler(authController.login));
 router.post('/refresh', validate(refreshSchema), asyncHandler(authController.refresh));
 router.post('/logout', validate(logoutSchema), asyncHandler(authController.logout));
