@@ -15,6 +15,18 @@ export const authController = {
     res.json(result);
   },
 
+  async google(req: Request, res: Response) {
+    const { credential } = req.body;
+    const result = await authService.google(credential);
+    res.json(result);
+  },
+
+  async facebook(req: Request, res: Response) {
+    const { accessToken } = req.body;
+    const result = await authService.facebook(accessToken);
+    res.json(result);
+  },
+
   async refresh(req: Request, res: Response) {
     const { refreshToken } = req.body;
     const result = await authService.refresh(refreshToken);

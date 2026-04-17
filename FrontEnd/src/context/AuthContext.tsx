@@ -11,6 +11,8 @@ type AuthContextValue = {
   hasRole: (role: UserRole) => boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
+  loginWithFacebook: (accessToken: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -44,17 +46,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     void syncUser();
   }, [syncUser]);
 
-  const login = useCallback(async (email: string, password: string) => {
-    const profile = await authService.login({ email, password });
+  const onAuthenticated = useCallback(async (profile: PublicUser) => {
     await cartService.mergeGuestCart();
     setUser(profile);
   }, []);
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
-    const profile = await authService.register({ name, email, password });
-    await cartService.mergeGuestCart();
-    setUser(profile);
-  }, []);
+  const login = useCallback(
+    async (email: string, password: string) => {
+      const profile = await authService.login({ email, password });
+      await onAuthenticated(profile);
+    },
+    [onAuthenticated],
+  );
+
+  const register = useCallback(
+    async (name: string, email: string, password: string) => {
+      const profile = await authService.register({ name, email, password });
+      await onAuthenticated(profile);
+    },
+    [onAuthenticated],
+  );
+
+  const loginWithGoogle = useCallback(
+    async (credential: string) => {
+      const profile = await authService.google(credential);
+      await onAuthenticated(profile);
+    },
+    [onAuthenticated],
+  );
+
+  const loginWithFacebook = useCallback(
+    async (accessToken: string) => {
+      const profile = await authService.facebook(accessToken);
+      await onAuthenticated(profile);
+    },
+    [onAuthenticated],
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -72,9 +99,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       hasRole: (role) => user?.role === role,
       login,
       register,
+      loginWithGoogle,
+      loginWithFacebook,
       logout,
     }),
-    [user, loading, login, register, logout],
+    [user, loading, login, register, loginWithGoogle, loginWithFacebook, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -3,7 +3,6 @@ import { Layout } from '../app/Layout';
 import { AdminPage } from '../pages/AdminPage';
 import { CartPage } from '../pages/CartPage';
 import { ForbiddenPage } from '../pages/ForbiddenPage';
-import { LoginPage } from '../pages/LoginPage';
 import { OrdersPage } from '../pages/OrdersPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { RegisterPage } from '../pages/RegisterPage';
@@ -14,7 +13,6 @@ const router = createBrowserRouter([
   { path: '/productos', element: <ProductsPage /> },
   { path: '/cart', element: <CartPage /> },
   { path: '/forbidden', element: <ForbiddenPage /> },
-  { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   {
     element: <SessionGuard />,
