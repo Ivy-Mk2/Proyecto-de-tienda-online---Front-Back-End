@@ -12,7 +12,7 @@ export type PublicUser = {
 export type AuthResponse = {
   user: PublicUser;
   accessToken: string;
-  refreshToken: string;
+  // refreshToken is now set as HttpOnly cookie by the server — not in the body
 };
 
 export type ProductImage = {
@@ -60,13 +60,32 @@ export type OrderItem = {
   subtotal: string;
 };
 
+export type ShippingAddress = {
+  fullName: string;
+  phone: string;
+  address: string;
+  district: string;
+  city: string;
+  notes?: string;
+};
+
 export type Order = {
   id: string;
   total: string;
   paymentStatus: string;
   paymentProvider: string;
+  shippingAddress?: ShippingAddress | null;
   createdAt: string;
   items: OrderItem[];
+};
+
+export type AdminOrderUser = { id: string; name: string; email: string };
+
+export type AdminOrder = Order & { user: AdminOrderUser };
+
+export type PaginatedOrders = {
+  data: AdminOrder[];
+  meta: { total: number; page: number; limit: number; pages: number };
 };
 
 export type ApiError = {

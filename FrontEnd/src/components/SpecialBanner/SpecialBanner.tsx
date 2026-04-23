@@ -1,17 +1,11 @@
 import { useMemo } from 'react';
 import { useBanners } from '../../hooks/useBanners';
 import { Banner } from '../../types/api';
+import { resolveImageUrl } from '../../lib/api/imageUrl';
 import './SpecialBanner.css';
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/api\/v\d+$/, '');
 const MAX_SPECIAL_BANNERS = 2;
 const MARQUEE_REPETITIONS = 8;
-
-const resolveImageUrl = (imageUrl?: string) => {
-  if (!imageUrl) return '';
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
-  return `${API_BASE_URL}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
-};
 
 const getBannerLabel = (banner: Banner) => (banner.label ?? banner.title).trim();
 

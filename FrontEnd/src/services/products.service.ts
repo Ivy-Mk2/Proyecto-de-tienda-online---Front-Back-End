@@ -22,6 +22,10 @@ export const productService = {
   getFeaturedProducts() {
     return apiRequest<Product[]>('/products?featured=true&isActive=true');
   },
+
+  getById(id: string) {
+    return apiRequest<Product>(`/products/${id}`);
+  },
 };
 
 export const productsService = {

@@ -1,0 +1,169 @@
+.favs-title {
+  font-size: 2.8rem;
+  margin-bottom: 3rem;
+  padding-top: 3rem;
+}
+
+.favs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.favs-skeleton {
+  height: 320px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Empty state */
+.favs-empty {
+  text-align: center;
+  padding: 6rem 0;
+  color: #666;
+}
+
+.favs-empty__icon {
+  font-size: 5rem;
+  margin-bottom: 1.6rem;
+  color: #ccc;
+}
+
+.favs-empty p {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.favs-empty__cta {
+  display: inline-block;
+  padding: 1rem 2.4rem;
+  background: #111;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  transition: background 0.15s;
+}
+
+.favs-empty__cta:hover {
+  background: #333;
+}
+
+/* Card */
+.favs-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.favs-card__image-link {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.favs-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s;
+}
+
+.favs-card:hover .favs-card__img {
+  transform: scale(1.03);
+}
+
+.favs-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 1.3rem;
+  min-height: 180px;
+}
+
+.favs-card__body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.favs-card__name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+}
+
+.favs-card__name:hover {
+  text-decoration: underline;
+}
+
+.favs-card__price {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.favs-card__category {
+  font-size: 1.2rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.8rem;
+}
+
+.favs-card__actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: auto;
+}
+
+.favs-card__btn {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: background 0.15s;
+}
+
+.favs-card__btn--cart {
+  flex: 1;
+  background: #111;
+  color: #fff;
+}
+
+.favs-card__btn--cart:hover {
+  background: #333;
+}
+
+.favs-card__btn--remove {
+  width: 38px;
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #888;
+}
+
+.favs-card__btn--remove:hover:not(:disabled) {
+  border-color: #b00020;
+  color: #b00020;
+}
+
+.favs-card__btn--remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

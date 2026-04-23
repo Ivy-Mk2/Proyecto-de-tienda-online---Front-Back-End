@@ -4,7 +4,6 @@ import { tokens } from '../lib/api/tokens';
 
 const persistSession = (result: AuthResponse) => {
   tokens.setAccessToken(result.accessToken);
-  tokens.setRefreshToken(result.refreshToken);
   return result.user;
 };
 
@@ -14,7 +13,6 @@ export const authService = {
       method: 'POST',
       body: input,
     });
-
     return persistSession(result);
   },
 
@@ -23,7 +21,6 @@ export const authService = {
       method: 'POST',
       body: input,
     });
-
     return persistSession(result);
   },
 
@@ -32,7 +29,6 @@ export const authService = {
       method: 'POST',
       body: { credential },
     });
-
     return persistSession(result);
   },
 
@@ -41,7 +37,6 @@ export const authService = {
       method: 'POST',
       body: { accessToken },
     });
-
     return persistSession(result);
   },
 
@@ -50,15 +45,8 @@ export const authService = {
   },
 
   async logout() {
-    const refreshToken = tokens.getRefreshToken();
-
-    if (refreshToken) {
-      await apiRequest<void>('/auth/logout', {
-        method: 'POST',
-        body: { refreshToken },
-      });
-    }
-
+    // Server reads the HttpOnly cookie and deletes it — no body needed
+    await apiRequest<void>('/auth/logout', { method: 'POST' });
     tokens.clearSession();
   },
 };

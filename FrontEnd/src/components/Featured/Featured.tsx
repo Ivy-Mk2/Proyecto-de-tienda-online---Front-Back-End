@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { cartService } from '../../services/cart.service';
 import { favoritesService } from '../../services/favorites.service';
 import { productService } from '../../services/products.service';
 import { Product } from '../../types/api';
 import { getApiErrorMessage } from '../../hooks/useApiError';
 import { useAuth } from '../../context/AuthContext';
+import { resolveImageUrl } from '../../lib/api/imageUrl';
 import './Featured.css';
-
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/api\/v\d+$/, '');
 
 const formatPrice = (price: string | number) => {
   const parsed = Number(price);
@@ -18,12 +18,6 @@ const formatPrice = (price: string | number) => {
     currency: 'EUR',
     minimumFractionDigits: 2,
   }).format(parsed);
-};
-
-const resolveImageUrl = (imageUrl?: string) => {
-  if (!imageUrl) return '';
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
-  return `${API_BASE_URL}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
 };
 
 const getPreviousPrice = (product: Product): string | null => {
@@ -204,7 +198,9 @@ const Featured = () => {
                   </div>
 
                   <div className="featured-card__content">
-                    <h3>{product.name}</h3>
+                    <Link to={`/productos/${product.id}`} className="featured-card__name-link">
+                      <h3>{product.name}</h3>
+                    </Link>
                     <p className="featured-card__price">
                       {previousPrice ? <span className="featured-card__previous">{formatPrice(previousPrice)}</span> : null}
                       <span className="featured-card__current">{formatPrice(product.price)}</span>

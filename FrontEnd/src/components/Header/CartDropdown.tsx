@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import useDropdown from '../Hooks/hooks';
 import { useCartData } from '../../hooks/useCartData';
 import { OptimizedImage } from '../ui';
+import { resolveImageUrl } from '../../lib/api/imageUrl';
 import './CartDropdown.css';
 
 const PEN_FORMATTER = new Intl.NumberFormat('es-PE', {
@@ -126,7 +127,7 @@ const CartDropdown = () => {
                     </button>
                     <div className="product-img-container">
                       <OptimizedImage
-                        src={image?.imageUrl}
+                        src={resolveImageUrl(image?.imageUrl)}
                         alt={image?.altText ?? item.product.name}
                         className="header__dropdown-product-img"
                       />

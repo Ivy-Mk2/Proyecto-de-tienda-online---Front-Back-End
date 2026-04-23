@@ -1,20 +1,12 @@
 import { useMemo, useRef } from 'react';
 import { Product } from '../../types/api';
 import { useFeaturedProducts } from '../../hooks/useFeaturedProducts';
+import { resolveImageUrl } from '../../lib/api/imageUrl';
 import styles from './Marquee.module.css';
 
 type MarqueeProps = {
   products?: Product[];
   title?: string;
-};
-
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/api\/v\d+$/, '');
-
-const resolveImageUrl = (imageUrl?: string) => {
-  if (!imageUrl) return '';
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
-
-  return `${API_BASE_URL}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
 };
 
 const formatPrice = (price: string | number) => {

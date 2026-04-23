@@ -7,7 +7,7 @@ export const SessionGuard = () => {
   const location = useLocation();
 
   if (loading) return <p>Loading session...</p>;
-  if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!isAuthenticated) return <Navigate to="/" state={{ from: location }} replace />;
 
   return <Outlet />;
 };

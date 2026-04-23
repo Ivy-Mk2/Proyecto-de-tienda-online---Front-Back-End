@@ -25,13 +25,10 @@ const refreshAccessToken = async (): Promise<string | null> => {
   if (refreshPromise) return refreshPromise;
 
   refreshPromise = (async () => {
-    const refreshToken = tokens.getRefreshToken();
-    if (!refreshToken) return null;
-
+    // Refresh token is sent automatically via HttpOnly cookie (credentials: 'include')
     const response = await fetch(`${API_URL}/auth/refresh`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -72,6 +69,7 @@ export const apiRequest = async <T>(path: string, options: RequestOptions = {}):
     method,
     headers,
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+    credentials: 'include',
   });
 
   if (response.status === 401 && options.auth && options.retry !== false) {

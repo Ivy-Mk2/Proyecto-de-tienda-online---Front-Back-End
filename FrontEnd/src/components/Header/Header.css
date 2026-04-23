@@ -215,3 +215,27 @@
     width: 100%;
     margin-top: 1rem;
 }
+
+.header__auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0.8rem 0;
+}
+
+.header__auth-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 1.4rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #333;
+    transition: color 0.15s;
+}
+
+.header__auth-links a:last-child {
+    border-bottom: none;
+}
+
+.header__auth-links a:hover {
+    color: #fff;
+}

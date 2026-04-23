@@ -1,5 +1,5 @@
-import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getApiErrorMessage } from '../../hooks/useApiError';
 import { loadFacebookSdk, loadGoogleSdk } from '../../lib/social/sdk';
@@ -8,12 +8,19 @@ import useDropdown from '../Hooks/hooks';
 const User = () => {
   const { isActive, toggleDropdown, dropdownRef, dropdownRefIcon } = useDropdown<HTMLDivElement>();
   const { isAuthenticated, user, login, loginWithGoogle, loginWithFacebook, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loadingLocal, setLoadingLocal] = useState(false);
   const [loadingFacebook, setLoadingFacebook] = useState(false);
+
+  const redirectAfterLogin = useCallback(() => {
+    const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname;
+    if (from && from !== '/') navigate(from, { replace: true });
+  }, [location.state, navigate]);
 
   const googleContainerRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +45,7 @@ const User = () => {
             try {
               setError('');
               await loginWithGoogle(response.credential);
+              redirectAfterLogin();
             } catch (err) {
               setError(getApiErrorMessage(err));
             }
@@ -71,6 +79,7 @@ const User = () => {
       await login(email.trim().toLowerCase(), password);
       setPassword('');
       setEmail('');
+      redirectAfterLogin();
     } catch (err) {
       setError(getApiErrorMessage(err));
     } finally {
@@ -97,6 +106,7 @@ const User = () => {
             }
 
             await loginWithFacebook(response.authResponse.accessToken);
+            redirectAfterLogin();
           } catch (err) {
             setError(getApiErrorMessage(err));
           } finally {
@@ -122,6 +132,13 @@ const User = () => {
           <div className="header__auth-status">
             <p>Hola, {user?.name}</p>
             <p>Sesión con {user?.authProvider.toLowerCase()}.</p>
+            <div className="header__auth-links">
+              <Link to="/orders" onClick={toggleDropdown}>Mis pedidos</Link>
+              <Link to="/favoritos" onClick={toggleDropdown}>Mis favoritos</Link>
+              {user?.role === 'ADMIN' ? (
+                <Link to="/admin" onClick={toggleDropdown}>Panel admin</Link>
+              ) : null}
+            </div>
             <button type="button" onClick={() => void logout()}>
               Cerrar sesión
             </button>

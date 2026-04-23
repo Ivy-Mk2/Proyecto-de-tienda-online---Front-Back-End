@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBanners } from '../../hooks/useBanners';
+import { resolveImageUrl } from '../../lib/api/imageUrl';
 import './Banner.css';
 
 const AUTO_ROTATE_MS = 5000;
-const API_URL = 'http://localhost:4000';
 
 type SlideDirection = 'next' | 'prev';
 
@@ -139,7 +139,7 @@ const Banner = () => {
               ? `banner__image exit ${direction === 'next' ? 'to-left' : 'to-right'}`
               : 'banner__image';
 
-          return <img key={banner.id} src={`${API_URL}${banner.imageUrl}`} alt={banner.title} className={imageClass} />;
+          return <img key={banner.id} src={resolveImageUrl(banner.imageUrl)} alt={banner.title} className={imageClass} />;
         })}
       </div>
     </section>

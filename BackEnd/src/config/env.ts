@@ -14,7 +14,8 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().default('http://localhost:5173'),
   MAX_UPLOAD_SIZE_MB: z.coerce.number().default(5),
   GOOGLE_CLIENT_ID: z.string().min(1),
-
+  FACEBOOK_APP_ID: z.string().optional(),
+  FACEBOOK_APP_SECRET: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

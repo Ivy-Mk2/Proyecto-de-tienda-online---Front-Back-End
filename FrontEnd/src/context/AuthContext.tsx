@@ -23,14 +23,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const syncUser = useCallback(async () => {
-    const hasToken = Boolean(tokens.getAccessToken() || tokens.getRefreshToken());
-
-    if (!hasToken) {
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
+    // Always attempt to restore session.
+    // If there's a valid access token, /auth/me succeeds directly.
+    // If only the HttpOnly refresh cookie is present, apiRequest retries after refresh.
+    // Both cases are handled transparently by the API client.
     try {
       const profile = await authService.me();
       setUser(profile);
