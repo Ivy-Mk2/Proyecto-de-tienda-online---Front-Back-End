@@ -1,9 +1,16 @@
+import { Outlet, useLocation } from 'react-router-dom';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 import './Layout.css';
-import { HomePage } from '../pages/HomePage';
+
 export const Layout = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
   return (
     <>
-      <HomePage />
+      {!isHome && <Header />}
+      <Outlet />
+      {!isHome && <Footer />}
     </>
   );
 };
