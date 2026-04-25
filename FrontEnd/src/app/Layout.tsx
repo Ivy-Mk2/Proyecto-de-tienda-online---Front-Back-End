@@ -5,12 +5,14 @@ import './Layout.css';
 
 export const Layout = () => {
   const { pathname } = useLocation();
-  const isHome = pathname === '/';
+  const usesShell808 = ['/', '/productos', '/cart', '/favoritos', '/orders', '/checkout', '/register', '/login', '/admin', '/perfil'].some(
+    (p) => pathname === p || pathname.startsWith('/productos/'),
+  );
   return (
     <>
-      {!isHome && <Header />}
+      {!usesShell808 && <Header />}
       <Outlet />
-      {!isHome && <Footer />}
+      {!usesShell808 && <Footer />}
     </>
   );
 };
